@@ -60,7 +60,7 @@ public class Especificacao {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(codigo).append(" - ").append(fabricante).append(" - ").append(cor).append(" - ").append(sistema).append(" - ").append(detalhes);
+        sb.append(fabricante).append(" - ").append(cor).append(" - ").append(sistema).append(" - ").append(detalhes);
         return sb.toString();
     }
     

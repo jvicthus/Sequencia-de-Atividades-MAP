@@ -32,7 +32,7 @@ public class ConnectionFactory {
     }
     
     /* TESTE DE CONEXAO */
-    public static void main(String[] args) throws SQLException {
+    /*public static void main(String[] args) throws SQLException {
         
         if(ConnectionFactory.getConnection() != null){
             
@@ -41,5 +41,5 @@ public class ConnectionFactory {
             
             System.out.println("deu pau!");
         }
-    }
+    }*/
 }

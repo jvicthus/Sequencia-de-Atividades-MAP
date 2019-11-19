@@ -15,6 +15,12 @@ public class Produto{
     private String nome;
     private float preco;
     private Especificacao Espc;
+    
+    
+    public Produto(){
+        
+        Espc = new Especificacao();
+    }
 
     
     public int getCodigo() {

@@ -177,4 +177,38 @@ public class ProdutoDAO {
         return p;
     }
     
+    public List<Produto> buscarProduto(String query) throws Exception{
+        List<Produto> produtos = new ArrayList<>();
+        con = ConnectionFactory.getConnection();
+        sql = "select p.*, e.* from produtos p, especificacao e where p.cod_especificacao = e.codigo and p.nome ilike ?";
+        st = con.prepareStatement(sql);
+        st.setString(1, query + '%');
+        ResultSet rs = st.executeQuery();
+        while(rs.next()){
+            int codigo = rs.getInt(1);
+            String nome = rs.getString("nome");
+            float preco = rs.getFloat("preco");
+            String fabricante = rs.getString("fabricante");
+            String cor = rs.getString("cor");
+            String sistema = rs.getString("sistema");
+            String detalhes = rs.getString("detalhes");
+            int codigoEspc = rs.getInt("cod_especificacao");
+            
+            Produto p = new Produto();
+            
+            p.setCodigo(codigo);
+            p.setNome(nome);
+            p.setPreco(preco);
+            p.getEspc().setCodigo(codigoEspc);
+            p.getEspc().setFabricante(fabricante);
+            p.getEspc().setCor(cor);
+            p.getEspc().setSistema(sistema);
+            p.getEspc().setDetalhes(detalhes);
+            
+            produtos.add(p);
+        }
+        con.close();
+        return produtos;
+    }
+    
 }
