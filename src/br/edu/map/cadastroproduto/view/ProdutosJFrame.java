@@ -7,9 +7,11 @@ package br.edu.map.cadastroproduto.view;
 
 import br.edu.map.cadastroproduto.dao.ProdutoDAO;
 import br.edu.map.cadastroproduto.model.Produto;
+import br.edu.map.cadastroproduto.util.StringsUtil;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,6 +29,7 @@ public class ProdutosJFrame extends javax.swing.JFrame {
     public ProdutosJFrame() {
         initComponents();
         preencherTabela(null);
+        setPropiedades();
     }
     
     public void preencherTabela(List<Produto> param){
@@ -38,7 +41,7 @@ public class ProdutosJFrame extends javax.swing.JFrame {
             DefaultTableModel model = new DefaultTableModel();
 
             model.setColumnCount(7);
-            model.setColumnIdentifiers(new String[]{"Código", "Nome", "Preço", "Fabricante", "Sistema", "Cor", "Detalhes"});
+            model.setColumnIdentifiers(new String[]{StringsUtil.getString(StringsUtil.COLUNA_CODIGO), StringsUtil.getString(StringsUtil.COLUNA_NOME), StringsUtil.getString(StringsUtil.COLUNA_PRECO), StringsUtil.getString(StringsUtil.COLUNA_FABRICANTE), StringsUtil.getString(StringsUtil.COLUNA_SISTEMA), StringsUtil.getString(StringsUtil.COLUNA_COR), StringsUtil.getString(StringsUtil.COLUNA_DETALHES)});
             model.setRowCount(lista.size());
 
             for (int i = 0; i < lista.size(); i++) {
@@ -55,6 +58,17 @@ public class ProdutosJFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+    
+    private void setPropiedades(){
+        
+        labelProdutos.setText(StringsUtil.getString(StringsUtil.TITULO_PRODUTO));
+        buttonNovo.setText(StringsUtil.getString(StringsUtil.BOTAO_NOVO));
+        buttonEditar.setText(StringsUtil.getString(StringsUtil.BOTAO_EDITAR));
+        buttonExcluir.setText(StringsUtil.getString(StringsUtil.BOTAO_EXCLUIR));
+        buttonSair.setText(StringsUtil.getString(StringsUtil.BOTAO_SAIR));
+        menuIdioma.setText(StringsUtil.getString(StringsUtil.MENU_IDIOMA));
+        menuRelatorios.setText(StringsUtil.getString(StringsUtil.MENU_RELATORIO));
     }
 
     /**
@@ -74,6 +88,12 @@ public class ProdutosJFrame extends javax.swing.JFrame {
         buttonEditar = new javax.swing.JButton();
         buttonExcluir = new javax.swing.JButton();
         buttonSair = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        menuIdioma = new javax.swing.JMenu();
+        menuItemPTBR = new javax.swing.JMenuItem();
+        menuItemENUS = new javax.swing.JMenuItem();
+        menuItemESES = new javax.swing.JMenuItem();
+        menuRelatorios = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -134,6 +154,39 @@ public class ProdutosJFrame extends javax.swing.JFrame {
             }
         });
 
+        menuIdioma.setText("Idiomas");
+
+        menuItemPTBR.setText("pt_BR");
+        menuItemPTBR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemPTBRActionPerformed(evt);
+            }
+        });
+        menuIdioma.add(menuItemPTBR);
+
+        menuItemENUS.setText("en_US");
+        menuItemENUS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemENUSActionPerformed(evt);
+            }
+        });
+        menuIdioma.add(menuItemENUS);
+
+        menuItemESES.setText("es_ES");
+        menuItemESES.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemESESActionPerformed(evt);
+            }
+        });
+        menuIdioma.add(menuItemESES);
+
+        jMenuBar1.add(menuIdioma);
+
+        menuRelatorios.setText("Relatórios");
+        jMenuBar1.add(menuRelatorios);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -184,17 +237,24 @@ public class ProdutosJFrame extends javax.swing.JFrame {
         produtoSelecionado = null;
         NovoProdutoJFrame janelaNovoP = new NovoProdutoJFrame(this);
         janelaNovoP.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        janelaNovoP.setPropiedades(produtoSelecionado);
         janelaNovoP.setVisible(true);
     }//GEN-LAST:event_buttonNovoActionPerformed
 
     private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
         // TODO add your handling code here:
         
-        NovoProdutoJFrame janelaNovoP = new NovoProdutoJFrame(this, produtoSelecionado);
-        janelaNovoP.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        janelaNovoP.setTitle("Editar");
-        janelaNovoP.preencherCliente();
-        janelaNovoP.setVisible(true);
+        if(produtoSelecionado == null){
+            
+            JOptionPane.showMessageDialog(this, StringsUtil.getString(StringsUtil.AVISO_SELECPRODUTO));
+        }else{
+            
+            NovoProdutoJFrame janelaNovoP = new NovoProdutoJFrame(this, produtoSelecionado);
+            janelaNovoP.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            janelaNovoP.setPropiedades(produtoSelecionado);
+            janelaNovoP.preencherProduto();
+            janelaNovoP.setVisible(true);
+        }
         
         
     }//GEN-LAST:event_buttonEditarActionPerformed
@@ -205,7 +265,7 @@ public class ProdutosJFrame extends javax.swing.JFrame {
         if (produtoSelecionado != null) {
             try {
 
-                int op = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir o produto: " + produtoSelecionado.getCodigo() + " - " + produtoSelecionado.getNome(), "Excluir", JOptionPane.OK_CANCEL_OPTION);
+                int op = JOptionPane.showConfirmDialog(this, StringsUtil.getString(StringsUtil.AVISO_EXCLUIR), StringsUtil.getString(StringsUtil.BOTAO_EXCLUIR) , JOptionPane.OK_CANCEL_OPTION);
                 if (op == JOptionPane.OK_OPTION) {
                     dao.removerProduto(produtoSelecionado);
                     preencherTabela(null);
@@ -216,7 +276,7 @@ public class ProdutosJFrame extends javax.swing.JFrame {
 
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecione um cliente!");
+            JOptionPane.showMessageDialog(this, StringsUtil.getString(StringsUtil.AVISO_SELECPRODUTO));
         }
     }//GEN-LAST:event_buttonExcluirActionPerformed
 
@@ -249,16 +309,39 @@ public class ProdutosJFrame extends javax.swing.JFrame {
         try {
             produtoSelecionado = dao.buscarProduto(codigo);
 
-            System.out.println(produtoSelecionado);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_tableProdutosMouseClicked
 
+    private void menuItemPTBRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPTBRActionPerformed
+        // TODO add your handling code here:
+        
+        StringsUtil.setLocale(StringsUtil.LOCALE_PT_BR);
+        setPropiedades();
+        preencherTabela(null);
+    }//GEN-LAST:event_menuItemPTBRActionPerformed
+
+    private void menuItemENUSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemENUSActionPerformed
+        // TODO add your handling code here:
+        
+        StringsUtil.setLocale(StringsUtil.LOCALE_EN_US);
+        setPropiedades();
+        preencherTabela(null);
+    }//GEN-LAST:event_menuItemENUSActionPerformed
+
+    private void menuItemESESActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemESESActionPerformed
+        // TODO add your handling code here:
+        
+        StringsUtil.setLocale(StringsUtil.LOCALE_ES_ES);
+        setPropiedades();
+        preencherTabela(null);
+    }//GEN-LAST:event_menuItemESESActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws UnsupportedLookAndFeelException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -277,7 +360,7 @@ public class ProdutosJFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ProdutosJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(ProdutosJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-labelProdutos } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+
             java.util.logging.Logger.getLogger(ProdutosJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -295,8 +378,14 @@ labelProdutos } catch (javax.swing.UnsupportedLookAndFeelException ex) {
     private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonNovo;
     private javax.swing.JButton buttonSair;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelProdutos;
+    private javax.swing.JMenu menuIdioma;
+    private javax.swing.JMenuItem menuItemENUS;
+    private javax.swing.JMenuItem menuItemESES;
+    private javax.swing.JMenuItem menuItemPTBR;
+    private javax.swing.JMenu menuRelatorios;
     private javax.swing.JTable tableProdutos;
     private javax.swing.JTextField textBusca;
     // End of variables declaration//GEN-END:variables

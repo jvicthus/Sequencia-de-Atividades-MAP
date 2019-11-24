@@ -7,6 +7,7 @@ package br.edu.map.cadastroproduto.view;
 
 import br.edu.map.cadastroproduto.dao.ProdutoDAO;
 import br.edu.map.cadastroproduto.model.Produto;
+import br.edu.map.cadastroproduto.util.StringsUtil;
 import javax.swing.JOptionPane;
 
 /**
@@ -37,7 +38,9 @@ public class NovoProdutoJFrame extends javax.swing.JFrame {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public void preencherCliente(){
+    public void preencherProduto(){
+        
+        
         
         textNome.setText(produto.getNome());
         textPreco.setText(Float.toString(produto.getPreco())); 
@@ -45,6 +48,26 @@ public class NovoProdutoJFrame extends javax.swing.JFrame {
         textSistema.setText(produto.getEspc().getSistema());
         textFabricante.setText(produto.getEspc().getFabricante());
         textDetalhes.setText(produto.getEspc().getDetalhes());
+    }
+    
+    public void setPropiedades(Produto p){
+        
+        if(p == null){
+            
+            labelNovoProduto.setText(StringsUtil.getString(StringsUtil.TITULO_NOVOPRODUTO));
+        }else{
+            labelNovoProduto.setText(StringsUtil.getString(StringsUtil.TITULO_EDITARPRODUTO));
+        }
+        
+        labelNome.setText(StringsUtil.getString(StringsUtil.LABEL_NOME));
+        labelPreco.setText(StringsUtil.getString(StringsUtil.LABEL_PRECO));
+        labelCor.setText(StringsUtil.getString(StringsUtil.LABEL_COR));
+        labelSistema.setText(StringsUtil.getString(StringsUtil.LABEL_SISTEMA));
+        labelFabricante.setText(StringsUtil.getString(StringsUtil.LABEL_FABRICANTE));
+        labelDetalhes.setText(StringsUtil.getString(StringsUtil.LABEL_DETALHES));
+        buttonSalvar.setText(StringsUtil.getString(StringsUtil.BOTAO_SALVAR));
+        buttonCancelar.setText(StringsUtil.getString(StringsUtil.BOTAO_CANCELAR));
+        
     }
 
     
@@ -213,9 +236,15 @@ public class NovoProdutoJFrame extends javax.swing.JFrame {
             p.getEspc().setDetalhes(detalhes);
 
             try {
-                dao.inserirProduto(p);
-                principal.preencherTabela(null);
-                dispose();
+                
+                if(p == null){
+                    
+                    JOptionPane.showMessageDialog(this, "Preencha os dados do produto!");
+                }else{
+                    dao.inserirProduto(p);
+                    principal.preencherTabela(null);
+                    dispose();
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Erro ao inserir Produto!");
@@ -238,9 +267,14 @@ public class NovoProdutoJFrame extends javax.swing.JFrame {
             produto.getEspc().setDetalhes(detalhes);
 
             try {
-                dao.editarProduto(produto);
-                principal.preencherTabela(null);
-                dispose();
+                if(produto == null){
+                    
+                    JOptionPane.showMessageDialog(this, "Preencha os dados do produto!");
+                }else{
+                    dao.editarProduto(produto);
+                    principal.preencherTabela(null);
+                    dispose();
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Erro ao editar Produto!");
