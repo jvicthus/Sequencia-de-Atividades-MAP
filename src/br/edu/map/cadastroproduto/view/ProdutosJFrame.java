@@ -7,12 +7,17 @@ package br.edu.map.cadastroproduto.view;
 
 import br.edu.map.cadastroproduto.dao.ProdutoDAO;
 import br.edu.map.cadastroproduto.model.Produto;
+import br.edu.map.cadastroproduto.util.RelatorioManager;
 import br.edu.map.cadastroproduto.util.StringsUtil;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.swing.JRViewer;
 
 /**
  *
@@ -69,6 +74,9 @@ public class ProdutosJFrame extends javax.swing.JFrame {
         buttonSair.setText(StringsUtil.getString(StringsUtil.BOTAO_SAIR));
         menuIdioma.setText(StringsUtil.getString(StringsUtil.MENU_IDIOMA));
         menuRelatorios.setText(StringsUtil.getString(StringsUtil.MENU_RELATORIO));
+        menuItemRelatorioGeral.setText(StringsUtil.getString(StringsUtil.MENUITEM_RELATORIOGERAL));
+        menuItemPreto.setText(StringsUtil.getString(StringsUtil.MENUITEM_RELATORIOCORPRETA));
+        menuItemMilmais.setText(StringsUtil.getString(StringsUtil.MENUITEM_RELATORIOPRECOMIL));
     }
 
     /**
@@ -94,6 +102,9 @@ public class ProdutosJFrame extends javax.swing.JFrame {
         menuItemENUS = new javax.swing.JMenuItem();
         menuItemESES = new javax.swing.JMenuItem();
         menuRelatorios = new javax.swing.JMenu();
+        menuItemRelatorioGeral = new javax.swing.JMenuItem();
+        menuItemMilmais = new javax.swing.JMenuItem();
+        menuItemPreto = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -183,6 +194,31 @@ public class ProdutosJFrame extends javax.swing.JFrame {
         jMenuBar1.add(menuIdioma);
 
         menuRelatorios.setText("Relatórios");
+
+        menuItemRelatorioGeral.setText("Relatório Geral");
+        menuItemRelatorioGeral.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemRelatorioGeralActionPerformed(evt);
+            }
+        });
+        menuRelatorios.add(menuItemRelatorioGeral);
+
+        menuItemMilmais.setText("Preço: 1000+");
+        menuItemMilmais.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemMilmaisActionPerformed(evt);
+            }
+        });
+        menuRelatorios.add(menuItemMilmais);
+
+        menuItemPreto.setText("Cor: Preto");
+        menuItemPreto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemPretoActionPerformed(evt);
+            }
+        });
+        menuRelatorios.add(menuItemPreto);
+
         jMenuBar1.add(menuRelatorios);
 
         setJMenuBar(jMenuBar1);
@@ -338,6 +374,57 @@ public class ProdutosJFrame extends javax.swing.JFrame {
         preencherTabela(null);
     }//GEN-LAST:event_menuItemESESActionPerformed
 
+    private void menuItemRelatorioGeralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRelatorioGeralActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+            
+            JasperPrint relatorio = RelatorioManager.gerarRelatorioProdutos(dao.listarProdutos());
+            JFrame frame = new JFrame();
+            frame.setSize(800, 600);
+            JRViewer viewer = new JRViewer(relatorio);
+            frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            frame.add(viewer);
+            frame.setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(ProdutosJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_menuItemRelatorioGeralActionPerformed
+
+    private void menuItemMilmaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemMilmaisActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+
+            JasperPrint relatorio = RelatorioManager.gerarRelatorioProdutos(dao.listarProdutosMilMais());
+            JFrame frame = new JFrame();
+            frame.setSize(800, 600);
+            JRViewer viewer = new JRViewer(relatorio);
+            frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            frame.add(viewer);
+            frame.setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(ProdutosJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_menuItemMilmaisActionPerformed
+
+    private void menuItemPretoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPretoActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+
+            JasperPrint relatorio = RelatorioManager.gerarRelatorioProdutos(dao.listarProdutosCorPreta());
+            JFrame frame = new JFrame();
+            frame.setSize(800, 600);
+            JRViewer viewer = new JRViewer(relatorio);
+            frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            frame.add(viewer);
+            frame.setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(ProdutosJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_menuItemPretoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -384,7 +471,10 @@ public class ProdutosJFrame extends javax.swing.JFrame {
     private javax.swing.JMenu menuIdioma;
     private javax.swing.JMenuItem menuItemENUS;
     private javax.swing.JMenuItem menuItemESES;
+    private javax.swing.JMenuItem menuItemMilmais;
     private javax.swing.JMenuItem menuItemPTBR;
+    private javax.swing.JMenuItem menuItemPreto;
+    private javax.swing.JMenuItem menuItemRelatorioGeral;
     private javax.swing.JMenu menuRelatorios;
     private javax.swing.JTable tableProdutos;
     private javax.swing.JTextField textBusca;

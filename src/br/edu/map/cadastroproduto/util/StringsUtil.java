@@ -34,6 +34,9 @@ public class StringsUtil {
     public static final String BOTAO_SAIR = "botao.sair";
     public static final String MENU_IDIOMA = "menu.linguagem";
     public static final String MENU_RELATORIO = "menu.relatorio";
+    public static final String MENUITEM_RELATORIOGERAL = "menuitem.relatoriogeral";
+    public static final String MENUITEM_RELATORIOPRECOMIL = "menuitem.relatorioprecomil";
+    public static final String MENUITEM_RELATORIOCORPRETA = "menuitem.relatoriocorpreta";
     public static final String AVISO_SELECPRODUTO = "aviso.selecproduto";
     public static final String AVISO_EXCLUIR = "aviso.excluir";
     public static final String TITULO_NOVOPRODUTO = "titulo.novoproduto";

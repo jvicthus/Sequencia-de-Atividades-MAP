@@ -23,8 +23,8 @@ public class RelatorioManager {
     public static String path = 
             RelatorioManager.class.getClassLoader().getResource("").getPath() + "/jasper";
     
-    public static JasperPrint gerarRelatorioClientes(List<Produto> produtos) throws JRException{
-        JasperReport report = JasperCompileManager.compileReport(path + "/clientes.jrxml");
+    public static JasperPrint gerarRelatorioProdutos(List<Produto> produtos) throws JRException{
+        JasperReport report = JasperCompileManager.compileReport("C:\\Users\\Pichau\\Documents\\Facultrab\\NetBeansProjects\\Projeto Base\\src\\jasper\\Produtos.jrxml");
 
         return JasperFillManager.fillReport(report, null, new JRBeanCollectionDataSource(produtos));
     }

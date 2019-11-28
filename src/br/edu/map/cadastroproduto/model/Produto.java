@@ -56,6 +56,26 @@ public class Produto{
         this.Espc = Espc;
     }
     
+    public String getFabricante(){
+        
+        return getEspc().getFabricante();
+    }
+    
+    public String getSistema(){
+        
+        return getEspc().getSistema();
+    }
+    
+    public String getCor(){
+        
+        return getEspc().getCor();
+    }
+    
+    public String getDetalhes(){
+        
+        return getEspc().getDetalhes();
+    }
+    
     
     @Override
     public String toString() {

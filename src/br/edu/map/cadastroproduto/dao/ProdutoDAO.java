@@ -140,6 +140,86 @@ public class ProdutoDAO {
         return produtos;
     }
     
+    public List<Produto> listarProdutosMilMais() throws Exception{
+        
+        List<Produto> produtos = new ArrayList<>();
+        
+        con = ConnectionFactory.getConnection();
+        
+        sql = "select p.*, e.* from produtos p, especificacao e where p.cod_especificacao = e.codigo and p.preco >= 1000";
+        
+        st = con.prepareStatement(sql);
+        
+        ResultSet rs = st.executeQuery();
+        
+        while(rs.next()){
+            
+            int codigo = rs.getInt(1);
+            String nome = rs.getString("nome");
+            float preco = rs.getFloat("preco");
+            int codigoEspc = rs.getInt("cod_especificacao");
+            String fabricante = rs.getString("fabricante");
+            String cor = rs.getString("cor");
+            String sistema = rs.getString("sistema");
+            String detalhes = rs.getString("detalhes");
+            
+            Produto p = new Produto();
+            
+            p.setCodigo(codigo);
+            p.setNome(nome);
+            p.setPreco(preco);
+            p.getEspc().setCodigo(codigoEspc);
+            p.getEspc().setFabricante(fabricante);
+            p.getEspc().setCor(cor);
+            p.getEspc().setSistema(sistema);
+            p.getEspc().setDetalhes(detalhes);
+            
+            produtos.add(p);
+        }
+        con.close();
+        return produtos;
+    }
+    
+    public List<Produto> listarProdutosCorPreta() throws Exception{
+        
+        List<Produto> produtos = new ArrayList<>();
+        
+        con = ConnectionFactory.getConnection();
+        
+        sql = "select p.*, e.* from produtos p, especificacao e where p.cod_especificacao = e.codigo and e.cor ilike 'Preto'";
+        
+        st = con.prepareStatement(sql);
+        
+        ResultSet rs = st.executeQuery();
+        
+        while(rs.next()){
+            
+            int codigo = rs.getInt(1);
+            String nome = rs.getString("nome");
+            float preco = rs.getFloat("preco");
+            int codigoEspc = rs.getInt("cod_especificacao");
+            String fabricante = rs.getString("fabricante");
+            String cor = rs.getString("cor");
+            String sistema = rs.getString("sistema");
+            String detalhes = rs.getString("detalhes");
+            
+            Produto p = new Produto();
+            
+            p.setCodigo(codigo);
+            p.setNome(nome);
+            p.setPreco(preco);
+            p.getEspc().setCodigo(codigoEspc);
+            p.getEspc().setFabricante(fabricante);
+            p.getEspc().setCor(cor);
+            p.getEspc().setSistema(sistema);
+            p.getEspc().setDetalhes(detalhes);
+            
+            produtos.add(p);
+        }
+        con.close();
+        return produtos;
+    }
+    
     public Produto buscarProduto(int codigo) throws Exception{
         
         Produto p = null;
